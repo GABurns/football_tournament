@@ -136,7 +136,7 @@
       return Array.from(table.values()).sort((x,y)=> y.pts-x.pts || y.gd-x.gd || y.gf-x.gf || x.teamName.localeCompare(y.teamName));
     }
     const groupWinner = gid => { const r = computeStandingsForGroup(gid); return r.length && r[0].played>=3 ? r[0].teamId : null; };
-    const getWinnerFromMatch = (m, homeId, awayId) => { if (!m || m.status!=='played') return null; if (m.homeGoals>m.awayGoals) return homeId; if (m.homeGoals<m.awayGoals) return awayId; return null; }
+    const getWinnerFromMatch = (m, homeId, awayId) => { if (!m || m.status!=='played') return null; if (m.homeGoals>m.awayGoals) return homeId; if (m.homeGoals<m.awayGoals) return awayId; return null;}
     function resolvePlaceholder(id){
       if (!id || !id.startsWith('WIN-')) return id;
       const key = id.split('-')[1];
@@ -147,7 +147,7 @@
     }
     const labelForTeam = id => (teamMap.get(resolvePlaceholder(id))?.name) || (id?.startsWith('WIN-') ? id.replace('WIN-','Winner ') : (id||''));
 
-    // ===== Fixtures Filter (NEW) =====
+    // ===== Fixtures Filter (REVISED) =====
     function renderFixturesFilter() {
       const filterRoot = document.getElementById('fixtures-filter');
       if (!filterRoot) return;
@@ -162,9 +162,9 @@
       select.addEventListener('change', renderFixtures); // Re-render fixtures on change
     }
 
-    // ===== Fixtures (MODIFIED) =====
+    // ===== Fixtures (REVISED) =====
     function renderFixtures(){
-      renderFixturesFilter(); // Ensure filter is rendered
+      // DO NOT call renderFixturesFilter() here!
       const root = document.getElementById('fixtures-list'); if (!root) return; root.innerHTML='';
       const selectedGroup = document.getElementById('group-filter')?.value || '';
       let list = [...matches];
@@ -179,7 +179,7 @@
           <div class="team"><span class="name">${labelForTeam(m.homeId)}</span></div>
           <div>${m.status==='played'?`<span class='score'>${m.homeGoals} – ${m.awayGoals}</span>`:'vs'}</div>
           <div class="team" style="justify-content:flex-end"><span class="name">${labelForTeam(m.awayId)}</span></div>
-          <div class="when">${m.stage==='group' ? `Group ${m.groupId}${m.round?` · R${m.round}`:''}` : (m.ko||'')} · ${fmtDate(m.date)} · <span class="${m.status==='played'?'success':'muted'}">${m.status}</span></div>
+          <div class="when">${m.stage==='group' ? `Group ${m.groupId}${m.round?` · R${m.round}`:''}` : (m.ko||'')} · ${fmtDate(m.date)} · <span class="${m.status==='played'?'success':'muted'}">${m.status==='played'? 'Played':'Upcoming'}</span></div>
         `;
         root.appendChild(div);
       }
@@ -215,9 +215,9 @@
       const NS='http://www.w3.org/2000/svg';
       const make=(n,a={})=>{ const el=document.createElementNS(NS,n); for(const[k,v]of Object.entries(a)) el.setAttribute(k,v); return el; };
       const add=n=>svg.appendChild(n);
-      const teamLine=(x,y,label,score)=>{ const g=make('g'); g.appendChild(make('rect',{x,y,rx:12,ry:12,width:320,height:48,class:'box'})); const t=make('text',{x:x+16,y:y+30,class:'teamText'}); t.textContent=label; g.appendChild(t); if(score!==undefined&&score!==''){ const s=make('text',{x:x+290,y:y+30,class:'scoreText'}); s.textContent=score; g.appendChild(s);} return g; };
+      const teamLine=(x,y,label,score)=>{ const g=make('g'); g.appendChild(make('rect',{x,y,rx:12,ry:12,width:320,height:48,class:'box'})); const t=make('text',{x:x+16,y:y+30,class:'teamText'}); t.textContent=label; g.appendChild(t); if(score!==undefined&&score!==''){ const s=make('text',{x:x+265,y:y+30,class:'scoreText'}); s.textContent=score; g.appendChild(s); } return g; };
       const title=(x,y,txt)=>{ const t=make('text',{x,y,class:'label'}); t.textContent=txt; add(t); };
-      const block=(x,y,titleText,hId,aId,hg,ag)=>{ title(x,y-10,titleText); add(teamLine(x,y,labelForTeam(hId),hg??'')); add(teamLine(x,y+56,labelForTeam(aId),ag??'')); return {cx:x+320, cyTop:y+24, cyBot:y+80}; };
+      const block=(x,y,titleText,hId,aId,hg,ag)=>{ title(x,y-10,titleText); add(teamLine(x,y,labelForTeam(hId),hg??'')); add(teamLine(x,y+56,labelForTeam(aId),ag??'')); return {cx:x+320, cyTop:y+24, cyBot:y+80};};
       const sf1=block(40,70,'Semi-final 1 (A vs B)', resolvePlaceholder(SF1.homeId), resolvePlaceholder(SF1.awayId), SF1.homeGoals, SF1.awayGoals);
       const sf2=block(40,250,'Semi-final 2 (C vs D)', resolvePlaceholder(SF2.homeId), resolvePlaceholder(SF2.awayId), SF2.homeGoals, SF2.awayGoals);
       const midY=(sf1.cyBot+sf2.cyTop)/2; add(make('path',{d:`M ${sf1.cx} ${sf1.cyTop} H 500 V ${midY} H 610`,class:'connector'})); add(make('path',{d:`M ${sf2.cx} ${sf2.cyBot} H 500 V ${midY} H 610`,class:'connector'}));
@@ -227,6 +227,7 @@
     // ===== Init =====
     (async function(){
       try { await loadData(); } catch(e) { console.error(e); }
+      renderFixturesFilter(); // Ensure filter is rendered once after data loads
       setActiveRoute(location.hash || '#fixtures');
     })();
   </script>
