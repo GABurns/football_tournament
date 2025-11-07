@@ -1,0 +1,353 @@
+{
+  "groups": [
+    {
+      "id": "A",
+      "name": "Group A"
+    },
+    {
+      "id": "B",
+      "name": "Group B"
+    },
+    {
+      "id": "C",
+      "name": "Group C"
+    },
+    {
+      "id": "D",
+      "name": "Group D"
+    }
+  ],
+  "teams": [
+    {
+      "id": "A1",
+      "name": "Cliftonville (A)",
+      "groupId": "A"
+    },
+    {
+      "id": "A2",
+      "name": "St. Malachys (A)",
+      "groupId": "A"
+    },
+    {
+      "id": "A3",
+      "name": "Don Boscos (A)",
+      "groupId": "A"
+    },
+    {
+      "id": "A4",
+      "name": "Magherafelt Sky Blues (A)",
+      "groupId": "A"
+    },
+    {
+      "id": "B1",
+      "name": "22nd Youth",
+      "groupId": "B"
+    },
+    {
+      "id": "B2",
+      "name": "Shamrock Rovers (A)",
+      "groupId": "B"
+    },
+    {
+      "id": "B3",
+      "name": "Ballykeel (A)",
+      "groupId": "B"
+    },
+    {
+      "id": "B4",
+      "name": "Ballymena",
+      "groupId": "B"
+    },
+    {
+      "id": "C1",
+      "name": "Foyle Harps (A)",
+      "groupId": "C"
+    },
+    {
+      "id": "C2",
+      "name": "St. Malachys (B)",
+      "groupId": "C"
+    },
+    {
+      "id": "C3",
+      "name": "Ballykeel (B)",
+      "groupId": "C"
+    },
+    {
+      "id": "C4",
+      "name": "Shamrock Rovers (B)",
+      "groupId": "C"
+    },
+    {
+      "id": "D1",
+      "name": "Cliftonville (B)",
+      "groupId": "D"
+    },
+    {
+      "id": "D2",
+      "name": "Don Boscos (B)",
+      "groupId": "D"
+    },
+    {
+      "id": "D3",
+      "name": "Foyle Harps (B)",
+      "groupId": "D"
+    },
+    {
+      "id": "D4",
+      "name": "Magherafelt Sky Blues (B)",
+      "groupId": "D"
+    }
+  ],
+  "matches": [
+    {
+      "id": 1,
+      "stage": "group",
+      "groupId": "A",
+      "round": 1,
+      "date": "2025-11-30T09:00",
+      "homeId": "A1",
+      "awayId": "A2",
+      "homeGoals": 2,
+      "awayGoals": 1,
+      "status": "played"
+    },
+    {
+      "id": 2,
+      "stage": "group",
+      "groupId": "A",
+      "round": 1,
+      "date": "2025-11-30T10:00",
+      "homeId": "A3",
+      "awayId": "A4",
+      "homeGoals": 0,
+      "awayGoals": 0,
+      "status": "played"
+    },
+    {
+      "id": 3,
+      "stage": "group",
+      "groupId": "A",
+      "round": 2,
+      "date": "2025-11-30T09:00",
+      "homeId": "A1",
+      "awayId": "A3",
+      "homeGoals": 1,
+      "awayGoals": 3,
+      "status": "played"
+    },
+    {
+      "id": 4,
+      "stage": "group",
+      "groupId": "A",
+      "round": 2,
+      "date": "2025-11-30T10:00",
+      "homeId": "A2",
+      "awayId": "A4",
+      "homeGoals": 1,
+      "awayGoals": 2,
+      "status": "played"
+    },
+    {
+      "id": 5,
+      "stage": "group",
+      "groupId": "A",
+      "round": 3,
+      "date": "2025-11-30T09:00",
+      "homeId": "A1",
+      "awayId": "A4",
+      "homeGoals": null,
+      "awayGoals": null,
+      "status": "scheduled"
+    },
+    {
+      "id": 6,
+      "stage": "group",
+      "groupId": "A",
+      "round": 3,
+      "date": "2025-11-30T10:00",
+      "homeId": "A2",
+      "awayId": "A3",
+      "homeGoals": null,
+      "awayGoals": null,
+      "status": "scheduled"
+    },
+    {
+      "id": 7,
+      "stage": "group",
+      "groupId": "B",
+      "round": 1,
+      "date": "2025-11-30T11:00",
+      "homeId": "B1",
+      "awayId": "B2",
+      "homeGoals": 3,
+      "awayGoals": 1,
+      "status": "played"
+    },
+    {
+      "id": 8,
+      "stage": "group",
+      "groupId": "B",
+      "round": 1,
+      "date": "2025-11-30T12:00",
+      "homeId": "B3",
+      "awayId": "B4",
+      "homeGoals": 0,
+      "awayGoals": 2,
+      "status": "played"
+    },
+    {
+      "id": 9,
+      "stage": "group",
+      "groupId": "B",
+      "round": 2,
+      "date": "2025-11-30T11:00",
+      "homeId": "B1",
+      "awayId": "B3",
+      "homeGoals": 1,
+      "awayGoals": 1,
+      "status": "played"
+    },
+    {
+      "id": 10,
+      "stage": "group",
+      "groupId": "B",
+      "round": 2,
+      "date": "2025-11-30T12:00",
+      "homeId": "B2",
+      "awayId": "B4",
+      "homeGoals": 2,
+      "awayGoals": 2,
+      "status": "played"
+    },
+    {
+      "id": 11,
+      "stage": "group",
+      "groupId": "C",
+      "round": 1,
+      "date": "2025-11-30T09:00",
+      "homeId": "C1",
+      "awayId": "C2",
+      "homeGoals": 1,
+      "awayGoals": 0,
+      "status": "played"
+    },
+    {
+      "id": 12,
+      "stage": "group",
+      "groupId": "C",
+      "round": 1,
+      "date": "2025-11-30T10:00",
+      "homeId": "C3",
+      "awayId": "C4",
+      "homeGoals": 2,
+      "awayGoals": 2,
+      "status": "played"
+    },
+    {
+      "id": 13,
+      "stage": "group",
+      "groupId": "C",
+      "round": 2,
+      "date": "2025-11-30T09:00",
+      "homeId": "C1",
+      "awayId": "C3",
+      "homeGoals": 0,
+      "awayGoals": 1,
+      "status": "played"
+    },
+    {
+      "id": 14,
+      "stage": "group",
+      "groupId": "C",
+      "round": 2,
+      "date": "2025-11-30T10:00",
+      "homeId": "C2",
+      "awayId": "C4",
+      "homeGoals": 3,
+      "awayGoals": 1,
+      "status": "played"
+    },
+    {
+      "id": 15,
+      "stage": "group",
+      "groupId": "D",
+      "round": 1,
+      "date": "2025-11-30T11:00",
+      "homeId": "D1",
+      "awayId": "D2",
+      "homeGoals": 2,
+      "awayGoals": 2,
+      "status": "played"
+    },
+    {
+      "id": 16,
+      "stage": "group",
+      "groupId": "D",
+      "round": 1,
+      "date": "2025-11-30T12:00",
+      "homeId": "D3",
+      "awayId": "D4",
+      "homeGoals": 1,
+      "awayGoals": 0,
+      "status": "played"
+    },
+    {
+      "id": 17,
+      "stage": "group",
+      "groupId": "D",
+      "round": 2,
+      "date": "2025-11-30T11:00",
+      "homeId": "D1",
+      "awayId": "D3",
+      "homeGoals": 1,
+      "awayGoals": 2,
+      "status": "played"
+    },
+    {
+      "id": 18,
+      "stage": "group",
+      "groupId": "D",
+      "round": 2,
+      "date": "2025-11-30T12:00",
+      "homeId": "D2",
+      "awayId": "D4",
+      "homeGoals": 0,
+      "awayGoals": 1,
+      "status": "played"
+    },
+    {
+      "id": 19,
+      "stage": "knockout",
+      "ko": "SF1",
+      "date": "2025-11-30T10:00",
+      "homeId": "WIN-A",
+      "awayId": "WIN-B",
+      "homeGoals": null,
+      "awayGoals": null,
+      "status": "scheduled"
+    },
+    {
+      "id": 20,
+      "stage": "knockout",
+      "ko": "SF2",
+      "date": "2025-11-30T20:30",
+      "homeId": "WIN-C",
+      "awayId": "WIN-D",
+      "homeGoals": null,
+      "awayGoals": null,
+      "status": "scheduled"
+    },
+    {
+      "id": 21,
+      "stage": "knockout",
+      "ko": "FINAL",
+      "date": "2025-11-30T12:00",
+      "homeId": "WIN-SF1",
+      "awayId": "WIN-SF2",
+      "homeGoals": null,
+      "awayGoals": null,
+      "status": "scheduled"
+    }
+  ]
+}
