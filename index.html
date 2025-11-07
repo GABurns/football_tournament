@@ -68,6 +68,8 @@
       <section class="card">
         <div class="head"><h2>Fixtures & Results</h2></div>
         <div class="content">
+          <!-- Group Filter (added) -->
+          <div id="fixtures-filter" style="margin-bottom:1em;"></div>
           <div id="fixtures-list"></div>
         </div>
       </section>
@@ -134,7 +136,7 @@
       return Array.from(table.values()).sort((x,y)=> y.pts-x.pts || y.gd-x.gd || y.gf-x.gf || x.teamName.localeCompare(y.teamName));
     }
     const groupWinner = gid => { const r = computeStandingsForGroup(gid); return r.length && r[0].played>=3 ? r[0].teamId : null; };
-    const getWinnerFromMatch = (m, homeId, awayId) => { if (!m || m.status!=='played') return null; if (m.homeGoals>m.awayGoals) return homeId; if (m.homeGoals<m.awayGoals) return awayId; return null; };
+    const getWinnerFromMatch = (m, homeId, awayId) => { if (!m || m.status!=='played') return null; if (m.homeGoals>m.awayGoals) return homeId; if (m.homeGoals<m.awayGoals) return awayId; return null; }
     function resolvePlaceholder(id){
       if (!id || !id.startsWith('WIN-')) return id;
       const key = id.split('-')[1];
@@ -145,18 +147,40 @@
     }
     const labelForTeam = id => (teamMap.get(resolvePlaceholder(id))?.name) || (id?.startsWith('WIN-') ? id.replace('WIN-','Winner ') : (id||''));
 
-    // ===== Fixtures =====
+    // ===== Fixtures Filter (NEW) =====
+    function renderFixturesFilter() {
+      const filterRoot = document.getElementById('fixtures-filter');
+      if (!filterRoot) return;
+      filterRoot.innerHTML = `
+        <label for="group-filter" style="font-weight:600;margin-right:6px;">Filter by group:</label>
+        <select id="group-filter">
+          <option value="">All Groups</option>
+          ${groups.map(g => `<option value="${g.id}">${g.name}</option>`).join('')}
+        </select>
+      `;
+      const select = filterRoot.querySelector('#group-filter');
+      select.addEventListener('change', renderFixtures); // Re-render fixtures on change
+    }
+
+    // ===== Fixtures (MODIFIED) =====
     function renderFixtures(){
+      renderFixturesFilter(); // Ensure filter is rendered
       const root = document.getElementById('fixtures-list'); if (!root) return; root.innerHTML='';
-      const list = [...matches].sort((a,b)=> new Date(a.date)-new Date(b.date));
-      if (!list.length){ root.innerHTML = '<p class="muted">No fixtures yet.</p>'; return; }
+      const selectedGroup = document.getElementById('group-filter')?.value || '';
+      let list = [...matches];
+      if (selectedGroup) {
+        list = list.filter(m => m.stage === 'group' && m.groupId === selectedGroup);
+      }
+      list.sort((a,b)=> new Date(a.date)-new Date(b.date));
+      if (!list.length){ root.innerHTML = '<p class="muted">No fixtures found for this group.</p>'; return; }
       for (const m of list){
         const div = document.createElement('div'); div.className='fixture';
         div.innerHTML = `
           <div class="team"><span class="name">${labelForTeam(m.homeId)}</span></div>
           <div>${m.status==='played'?`<span class='score'>${m.homeGoals} – ${m.awayGoals}</span>`:'vs'}</div>
           <div class="team" style="justify-content:flex-end"><span class="name">${labelForTeam(m.awayId)}</span></div>
-          <div class="when">${m.stage==='group' ? `Group ${m.groupId}${m.round?` · R${m.round}`:''}` : (m.ko||'')} · ${fmtDate(m.date)} · <span class="${m.status==='played'?'success':'muted'}">${m.status}</span></div>`;
+          <div class="when">${m.stage==='group' ? `Group ${m.groupId}${m.round?` · R${m.round}`:''}` : (m.ko||'')} · ${fmtDate(m.date)} · <span class="${m.status==='played'?'success':'muted'}">${m.status}</span></div>
+        `;
         root.appendChild(div);
       }
     }
@@ -173,7 +197,7 @@
           <div class="content">
             <table>
               <thead><tr><th class='col-team'>Team</th><th>P</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>Pts</th></tr></thead>
-              <tbody>${rows.map(r=>`<tr><td class='col-team'>${r.teamName}</td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.gd}</td><td><strong>${r.pts}</strong></td></tr>`).join('')}</tbody>
+              <tbody>${rows.map(r=>`<tr><td class='col-team'>${r.teamName}</td><td>${r.played}</td><td>${r.won}</td><td>${r.drawn}</td><td>${r.lost}</td><td>${r.gf}</td><td>${r.ga}</td><td>${r.gd}</td><td>${r.pts}</td></tr>`).join('')}</tbody>
             </table>
           </div>`;
         root.appendChild(sec);
@@ -191,7 +215,7 @@
       const NS='http://www.w3.org/2000/svg';
       const make=(n,a={})=>{ const el=document.createElementNS(NS,n); for(const[k,v]of Object.entries(a)) el.setAttribute(k,v); return el; };
       const add=n=>svg.appendChild(n);
-      const teamLine=(x,y,label,score)=>{ const g=make('g'); g.appendChild(make('rect',{x,y,rx:12,ry:12,width:320,height:48,class:'box'})); const t=make('text',{x:x+16,y:y+30,class:'teamText'}); t.textContent=label; const s=make('text',{x:x+300,y:y+30,class:'scoreText','text-anchor':'end'}); s.textContent=score??''; g.appendChild(t); g.appendChild(s); return g; };
+      const teamLine=(x,y,label,score)=>{ const g=make('g'); g.appendChild(make('rect',{x,y,rx:12,ry:12,width:320,height:48,class:'box'})); const t=make('text',{x:x+16,y:y+30,class:'teamText'}); t.textContent=label; g.appendChild(t); if(score!==undefined&&score!==''){ const s=make('text',{x:x+290,y:y+30,class:'scoreText'}); s.textContent=score; g.appendChild(s);} return g; };
       const title=(x,y,txt)=>{ const t=make('text',{x,y,class:'label'}); t.textContent=txt; add(t); };
       const block=(x,y,titleText,hId,aId,hg,ag)=>{ title(x,y-10,titleText); add(teamLine(x,y,labelForTeam(hId),hg??'')); add(teamLine(x,y+56,labelForTeam(aId),ag??'')); return {cx:x+320, cyTop:y+24, cyBot:y+80}; };
       const sf1=block(40,70,'Semi-final 1 (A vs B)', resolvePlaceholder(SF1.homeId), resolvePlaceholder(SF1.awayId), SF1.homeGoals, SF1.awayGoals);
